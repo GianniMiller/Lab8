@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Product Inventory Management</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+        <body class="box">
+
+            <h1 class="title">Product Inventory Management</h1>
+
+            <form id="addProductForm">
+                <label for="productId">Product ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" id="productId" name="productId"><br><br>
+                <label for="productName">Product Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" id="productName" name="productName"><br><br>
+                <label for="productQuantity">Quantity:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="number" id="productQuantity" name="productQuantity"><br><br>
+
+
+                <button type="button" onclick="addProduct(
+                    document.getElementById('productId').value,
+                    document.getElementById('productName').value,
+                    parseInt(document.getElementById('productQuantity').value))">Add Product
+                </button>
+                
+            </form>
+
+            <hr>
+                <button onclick="displayInventory()">Display Inventory</button>
+                <div id="inventoryOutput"></div>
+            <hr>
+
+            <form id="findProductForm">
+                <label for="findProductId">Find Product by ID:</label>
+                <input type="text" id="findProductId" name="findProductId"><br>
+                <button type="button" onclick="findProduct(document.getElementById('findProductId').value)">Find Product</button>
+            </form>
+            <div id="productOutput"></div>
+
+
+            <script>
+                let inventory = {};
+    
+                function addProduct(id, name, quantity) {
+                    if (inventory[id]) {
+                        console.log("Product with ID " + id + " already exists. Updating quantity.");
+                        inventory[id].quantity += quantity;
+                    } else {
+                        inventory[id] = { name: name, quantity: quantity };
+                        console.log("Product added successfully.");
+                        showNewProductMessage();
+                    }
+                }
+                
+                function showNewProductMessage() {
+                    // Display the message
+                    let message = document.getElementById("newProductMessage");
+                
+                    message.style.display = "block";
+                    
+                    // Hide the message after 3 seconds
+                    setTimeout(function() {
+                        message.style.display = "none";
+                    }, 3000);
+                }
+        
+                function displayInventory() {
+                    let output = "Current Inventory:<br>";
+                    for (let id in inventory) {
+                        output += "ID: " + id + ", Name: " + inventory[id].name + ", Quantity: " + inventory[id].quantity + "<br>";
+                    }
+                    document.getElementById("inventoryOutput").innerHTML = output;
+                }
+        
+                function findProduct(id) {
+                    if (inventory[id]) {
+                        console.log("Product found - ID: " + id + ", Name: " + inventory[id].name + ", Quantity: " + inventory[id].quantity);
+                        document.getElementById("productOutput").innerHTML = "Product found - ID: " + id + ", Name: " + inventory[id].name + ", Quantity: " + inventory[id].quantity;
+                    } else {
+                        console.log("Product with ID " + id + " not found.");
+                        document.getElementById("productOutput").innerHTML = "Product with ID " + id + " not found.";
+                    }
+                }
+            </script>
+
+
+        </body>
+</html>
